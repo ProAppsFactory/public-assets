@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Micro-App Factory — Cockpit</title>
+<style>
+  :root{
+    --bg:#0e1117; --panel:#161b22; --panel2:#1c2230; --line:#2a313c;
+    --ink:#e6edf3; --mute:#8b949e; --accent:#4493f8; --good:#3fb950; --warn:#d29922; --bad:#f85149;
+    --chip:#21283400;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.45}
+  header{padding:16px 16px 8px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--bg);z-index:5}
+  h1{font-size:17px;margin:0 0 2px;letter-spacing:.2px}
+  .sub{color:var(--mute);font-size:12px}
+  .tiles{display:flex;gap:8px;margin-top:12px;overflow-x:auto;padding-bottom:4px}
+  .tile{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 12px;min-width:78px;text-align:center;flex:0 0 auto}
+  .tile b{display:block;font-size:18px}
+  .tile span{font-size:10px;color:var(--mute);text-transform:uppercase;letter-spacing:.6px}
+  nav{display:flex;gap:4px;padding:10px 12px;border-bottom:1px solid var(--line);position:sticky;top:108px;background:var(--bg);z-index:4}
+  nav button{flex:1;background:transparent;color:var(--mute);border:0;padding:9px 6px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer}
+  nav button.active{background:var(--panel2);color:var(--ink)}
+  main{padding:14px 12px 80px}
+  .kanban{display:flex;gap:10px;overflow-x:auto;padding-bottom:8px}
+  .col{flex:0 0 220px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:8px}
+  .col h3{font-size:11px;margin:2px 4px 8px;color:var(--mute);text-transform:uppercase;letter-spacing:.7px;display:flex;justify-content:space-between}
+  .card{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:9px 10px;margin-bottom:8px;cursor:pointer}
+  .card b{font-size:14px}
+  .card .row{display:flex;justify-content:space-between;align-items:center;margin-top:6px;gap:6px}
+  .badge{font-size:10px;padding:2px 7px;border-radius:999px;background:#30363d;color:#c9d1d9;white-space:nowrap}
+  .rev{font-size:12px;color:var(--good)}
+  .empty{color:var(--mute);font-size:12px;padding:6px 4px}
+  .teamcard{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:10px}
+  .teamcard .top{display:flex;justify-content:space-between;align-items:center}
+  .model{font-size:10px;padding:2px 8px;border-radius:999px;border:1px solid var(--line);color:var(--mute)}
+  .model.opus{color:#d2a8ff;border-color:#553c8b}
+  .model.sonnet{color:#79c0ff;border-color:#1f4d7a}
+  .model.haiku{color:#7ee787;border-color:#2c5a36}
+  .assign{font-size:12px;color:var(--mute);margin-top:6px}
+  textarea,input,select{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:8px;font-size:13px;font-family:inherit;margin-top:4px}
+  textarea{min-height:46px;resize:vertical}
+  label{font-size:11px;color:var(--mute);text-transform:uppercase;letter-spacing:.5px}
+  button.btn{background:var(--accent);color:#fff;border:0;border-radius:8px;padding:10px 14px;font-weight:600;font-size:14px;cursor:pointer}
+  button.ghost{background:transparent;border:1px solid var(--line);color:var(--ink)}
+  .fab{position:fixed;right:16px;bottom:16px;z-index:9}
+  .standup{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:12px}
+  .su-role{border-top:1px solid var(--line);padding-top:8px;margin-top:8px}
+  .su-role:first-of-type{border-top:0}
+  .gate{background:#241a00;border:1px solid #5a4a00;color:#f0c14b;border-radius:8px;padding:8px 10px;font-size:13px;margin-top:6px}
+  .report{white-space:pre-wrap;font-family:ui-monospace,Menlo,monospace;font-size:12px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:10px;margin-top:8px}
+  .modal{position:fixed;inset:0;background:#000a;display:none;align-items:flex-end;z-index:20}
+  .modal.show{display:flex}
+  .sheet{background:var(--panel);width:100%;max-height:90vh;overflow:auto;border-radius:16px 16px 0 0;padding:16px;border:1px solid var(--line)}
+  .sheet h2{font-size:15px;margin:0 0 10px}
+  .field{margin-bottom:10px}
+  .actions{display:flex;gap:8px;margin-top:12px}
+  .actions .btn{flex:1}
+  .hint{font-size:11px;color:var(--mute);margin-top:10px;line-height:1.4}
+  .tiny{font-size:11px;color:var(--mute)}
+  @media(min-width:760px){.tiles .tile{min-width:96px}}
+</style>
+</head>
+<body>
+<header>
+  <h1>📱 Micro-App Factory — Cockpit</h1>
+  <div class="sub" id="dateline">—</div>
+  <div class="tiles" id="tiles"></div>
+</header>
+<nav>
+  <button data-tab="pipeline" class="active">Pipeline</button>
+  <button data-tab="team">Team</button>
+  <button data-tab="standup">Standup</button>
+</nav>
+<main id="main"><div class="empty">Loading…</div></main>
+<button class="btn fab" id="fab" style="display:none">＋ App</button>
+
+<div class="modal" id="modal"><div class="sheet" id="sheet"></div></div>
+
+<script>
+const STATUSES=["Idea","Validating","Spec","Design","Building","Review","ASO","Submitted","Live","Monitoring","Growing","Maintenance","Killed"];
+const ROLES=[
+  {r:"Orchestrator / PM",m:"sonnet"},
+  {r:"Research Scout",m:"sonnet"},
+  {r:"Tech Lead / Architect",m:"opus"},
+  {r:"UI/UX Designer",m:"sonnet"},
+  {r:"iOS Developer",m:"sonnet"},
+  {r:"ASO & Growth Marketer",m:"sonnet"},
+  {r:"Release Engineer / DevOps",m:"sonnet"},
+];
+const KEY="factory-state";
+let state={apps:[],standups:[],team:{},gates:[]};
+let activeTab="pipeline";
+
+function load(){
+  try{
+    const saved=localStorage.getItem(KEY);
+    if(saved) state=JSON.parse(saved);
+  }catch(e){/* first run or private browsing */}
+  if(!state.apps) state.apps=[];
+  if(!state.standups) state.standups=[];
+  if(!state.team) state.team={};
+  if(!state.gates) state.gates=[];
+  document.getElementById('fab').style.display='block';
+  render();
+}
+
+function save(){
+  try{localStorage.setItem(KEY,JSON.stringify(state));}
+  catch(e){alert("Save failed: "+e);}
+}
+
+function today(){return new Date().toISOString().slice(0,10);}
+function uid(){return 'a'+Math.random().toString(36).slice(2,7);}
+function tile(n,l){return `<div class="tile"><b>${n}</b><span>${l}</span></div>`;}
+
+function render(){
+  document.getElementById('dateline').textContent=new Date().toLocaleDateString(undefined,{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  const live=state.apps.filter(a=>["Live","Monitoring","Growing","Maintenance"].includes(a.status)).length;
+  const build=state.apps.filter(a=>["Spec","Design","Building","Review"].includes(a.status)).length;
+  const val=state.apps.filter(a=>["Idea","Validating"].includes(a.status)).length;
+  const rev=state.apps.reduce((s,a)=>s+(+a.revenue||0),0);
+  document.getElementById('tiles').innerHTML=tile(state.apps.length,"Apps")+tile(live,"Live")+tile(build,"In Build")+tile(val,"Pipeline")+tile("$"+rev,"Est /mo");
+  document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===activeTab));
+  const m=document.getElementById('main');
+  if(activeTab==='pipeline') m.innerHTML=renderPipeline();
+  if(activeTab==='team') m.innerHTML=renderTeam();
+  if(activeTab==='standup') m.innerHTML=renderStandup();
+}
+
+function renderPipeline(){
+  if(!state.apps.length) return `<div class="empty">No apps yet. Tap ＋ App to add one, or have the Research Scout fill the backlog first.</div>`;
+  const cols=STATUSES.map(st=>{
+    const items=state.apps.filter(a=>a.status===st);
+    if(!items.length && !["Idea","Validating","Design","Building","Live"].includes(st)) return '';
+    const cards=items.map(a=>`<div class="card" onclick="openApp('${a.id}')">
+        <b>${esc(a.name||'Untitled')}</b>
+        <div class="row"><span class="badge">${esc(a.owner||'—')}</span>${a.revenue?`<span class="rev">$${esc(a.revenue)}/mo</span>`:''}</div>
+      </div>`).join('')||'<div class="empty">—</div>';
+    return `<div class="col"><h3>${st}<span>${items.length||''}</span></h3>${cards}</div>`;
+  }).join('');
+  return `<div class="kanban">${cols}</div><div class="hint">Tap a card to update status, owner, model, monetization or revenue. This cockpit is your daily view; the Orchestrator mirrors changes into <b>05_APP_REGISTRY.md</b> (the canonical record).</div>`;
+}
+
+function renderTeam(){
+  return ROLES.map(({r,m})=>{
+    const owned=state.apps.filter(a=>a.owner===r && !["Killed","Live","Growing","Maintenance"].includes(a.status));
+    const focus=state.team[r]||'';
+    const list=owned.length?owned.map(a=>`${esc(a.name)} <span class="tiny">(${a.status})</span>`).join(' · '):'<span class="tiny">on bench</span>';
+    return `<div class="teamcard">
+      <div class="top"><b>${r}</b><span class="model ${m}">${m}</span></div>
+      <div class="assign">Active: ${list}</div>
+      <label>Current focus / note</label>
+      <textarea onchange="setFocus('${r.replace(/'/g,"\\'")}',this.value)" placeholder="What this agent is doing…">${esc(focus)}</textarea>
+    </div>`;
+  }).join('')+`<div class="hint">Model defaults: Opus for the Tech Lead (architecture/hard calls), Sonnet everywhere else, Haiku for summarise/extract/bulk-variant subtasks. See <b>02_AGENT_ROLES.md</b>.</div>`;
+}
+
+function renderStandup(){
+  const last=state.standups[0];
+  const inputs=ROLES.map(({r})=>{
+    const d=(last&&last.date===today()&&last.entries[r])||{y:'',t:'',b:''};
+    const id=r.replace(/[^a-z]/gi,'');
+    return `<div class="su-role"><b>${r}</b>
+      <label>Yesterday</label><textarea id="y_${id}">${esc(d.y||'')}</textarea>
+      <label>Today</label><textarea id="t_${id}">${esc(d.t||'')}</textarea>
+      <label>Blockers</label><textarea id="b_${id}">${esc(d.b||'')}</textarea></div>`;
+  }).join('');
+  const gateList=state.gates.map((g,i)=>`<div class="gate">🚦 ${esc(g)} <span onclick="rmGate(${i})" class="tiny" style="float:right;cursor:pointer">remove</span></div>`).join('');
+  const history=state.standups.slice(0,7).map(s=>`<div class="report">${esc(reportText(s))}</div>`).join('');
+  return `<div class="standup"><b>Today's standup — ${today()}</b>
+    ${inputs}
+    <label style="margin-top:10px;display:block">🚦 Awaiting Operator (one per line via +)</label>
+    <div style="display:flex;gap:8px;margin-top:4px"><input id="gateInput" placeholder="e.g. FocusTimer: approve design"/><button class="btn" onclick="addGate()">+</button></div>
+    ${gateList}
+    <div class="actions"><button class="btn" onclick="saveStandup()">Save standup</button><button class="btn ghost" onclick="copyReport()">Copy as report</button></div>
+  </div>
+  <b class="tiny">Recent standups</b>${history||'<div class="empty">None yet.</div>'}`;
+}
+
+function reportText(s){
+  let o=`## Standup — ${s.date}\n`;
+  ROLES.forEach(({r})=>{const e=s.entries[r];if(e&&(e.y||e.t||e.b)){o+=`\n### ${r}\n- Yesterday: ${e.y||'—'}\n- Today: ${e.t||'—'}\n- Blockers: ${e.b||'—'}\n`;}});
+  if(s.gates&&s.gates.length){o+=`\n### 🚦 Awaiting Operator\n`+s.gates.map(g=>`- ${g}`).join('\n')+'\n';}
+  return o;
+}
+
+function saveStandup(){
+  const entries={};
+  ROLES.forEach(({r})=>{const id=r.replace(/[^a-z]/gi,'');
+    entries[r]={y:val('y_'+id),t:val('t_'+id),b:val('b_'+id)};});
+  const rec={date:today(),entries,gates:[...state.gates]};
+  state.standups=state.standups.filter(s=>s.date!==today());
+  state.standups.unshift(rec);
+  save();render();
+}
+function copyReport(){const s=state.standups[0]||{date:today(),entries:{},gates:state.gates};navigator.clipboard&&navigator.clipboard.writeText(reportText(s));alert('Standup copied — paste into 08_STANDUPS.md');}
+function addGate(){const v=val('gateInput');if(v){state.gates.push(v);save();render();}}
+function rmGate(i){state.gates.splice(i,1);save();render();}
+function setFocus(r,v){state.team[r]=v;save();}
+
+function openApp(id){
+  const a=id?state.apps.find(x=>x.id===id):{id:uid(),name:'',status:'Idea',owner:'',model:'sonnet',monet:'Paymium',revenue:'',note:''};
+  const isNew=!id;
+  document.getElementById('sheet').innerHTML=`
+    <h2>${isNew?'New app':'Edit app'}</h2>
+    <div class="field"><label>Name</label><input id="f_name" value="${esc(a.name)}"/></div>
+    <div class="field"><label>Status</label><select id="f_status">${STATUSES.map(s=>`<option ${s===a.status?'selected':''}>${s}</option>`).join('')}</select></div>
+    <div class="field"><label>Current owner</label><select id="f_owner"><option value="">—</option>${ROLES.map(({r})=>`<option ${r===a.owner?'selected':''}>${r}</option>`).join('')}</select></div>
+    <div class="field"><label>Model</label><select id="f_model">${['opus','sonnet','haiku'].map(x=>`<option ${x===a.model?'selected':''}>${x}</option>`).join('')}</select></div>
+    <div class="field"><label>Monetization</label><select id="f_monet">${['Paymium','Free + ads','One-time paid'].map(x=>`<option ${x===a.monet?'selected':''}>${x}</option>`).join('')}</select></div>
+    <div class="field"><label>Est. revenue / mo ($)</label><input id="f_rev" inputmode="numeric" value="${esc(a.revenue)}"/></div>
+    <div class="field"><label>Note</label><textarea id="f_note">${esc(a.note)}</textarea></div>
+    <div class="actions">
+      <button class="btn" onclick="saveApp('${a.id}',${isNew})">Save</button>
+      ${isNew?'':`<button class="btn ghost" onclick="delApp('${a.id}')">Delete</button>`}
+      <button class="btn ghost" onclick="closeModal()">Cancel</button>
+    </div>`;
+  document.getElementById('modal').classList.add('show');
+}
+function saveApp(id,isNew){
+  const a={id,name:val('f_name'),status:val('f_status'),owner:val('f_owner'),model:val('f_model'),monet:val('f_monet'),revenue:val('f_rev'),note:val('f_note')};
+  if(isNew) state.apps.push(a); else state.apps=state.apps.map(x=>x.id===id?a:x);
+  save();closeModal();render();
+}
+function delApp(id){if(confirm('Delete this app?')){state.apps=state.apps.filter(x=>x.id!==id);save();closeModal();render();}}
+function closeModal(){document.getElementById('modal').classList.remove('show');}
+function val(id){const e=document.getElementById(id);return e?e.value.trim():'';}
+function esc(s){return (s==null?'':''+s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{activeTab=b.dataset.tab;render();});
+document.getElementById('fab').onclick=()=>openApp(null);
+document.getElementById('modal').onclick=(e)=>{if(e.target.id==='modal')closeModal();};
+load();
+</script>
+</body>
+</html>

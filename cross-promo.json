@@ -1,0 +1,10 @@
+[
+  {
+    "_comment": "Add your live apps here. Each new app you ship appears automatically on the App Store developer page (the zero-maintenance default). Use this file only when you want curated featured placement without resubmitting apps.",
+    "id": "",
+    "name": "",
+    "tagline": "",
+    "iconURL": "https://raw.githubusercontent.com/ProAppsFactory/public-assets/main/icons/<app-id>.png",
+    "appStoreURL": "https://apps.apple.com/app/id<APP_STORE_ID>"
+  }
+]
