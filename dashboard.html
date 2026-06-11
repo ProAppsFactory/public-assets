@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Micro-App Factory — Cockpit</title>
+<title>Micro-App Factory: Cockpit</title>
 <style>
   :root{
     --bg:#0e1117; --panel:#161b22; --panel2:#1c2230; --line:#2a313c;
@@ -64,8 +64,8 @@
 </head>
 <body>
 <header>
-  <h1>📱 Micro-App Factory — Cockpit</h1>
-  <div class="sub" id="dateline">—</div>
+  <h1>📱 Micro-App Factory: Cockpit</h1>
+  <div class="sub" id="dateline">-</div>
   <div class="tiles" id="tiles"></div>
 </header>
 <nav>
@@ -136,8 +136,8 @@ function renderPipeline(){
     if(!items.length && !["Idea","Validating","Design","Building","Live"].includes(st)) return '';
     const cards=items.map(a=>`<div class="card" onclick="openApp('${a.id}')">
         <b>${esc(a.name||'Untitled')}</b>
-        <div class="row"><span class="badge">${esc(a.owner||'—')}</span>${a.revenue?`<span class="rev">$${esc(a.revenue)}/mo</span>`:''}</div>
-      </div>`).join('')||'<div class="empty">—</div>';
+        <div class="row"><span class="badge">${esc(a.owner||'-')}</span>${a.revenue?`<span class="rev">$${esc(a.revenue)}/mo</span>`:''}</div>
+      </div>`).join('')||'<div class="empty">-</div>';
     return `<div class="col"><h3>${st}<span>${items.length||''}</span></h3>${cards}</div>`;
   }).join('');
   return `<div class="kanban">${cols}</div><div class="hint">Tap a card to update status, owner, model, monetization or revenue. This cockpit is your daily view; the Orchestrator mirrors changes into <b>05_APP_REGISTRY.md</b> (the canonical record).</div>`;
@@ -169,7 +169,7 @@ function renderStandup(){
   }).join('');
   const gateList=state.gates.map((g,i)=>`<div class="gate">🚦 ${esc(g)} <span onclick="rmGate(${i})" class="tiny" style="float:right;cursor:pointer">remove</span></div>`).join('');
   const history=state.standups.slice(0,7).map(s=>`<div class="report">${esc(reportText(s))}</div>`).join('');
-  return `<div class="standup"><b>Today's standup — ${today()}</b>
+  return `<div class="standup"><b>Today's standup: ${today()}</b>
     ${inputs}
     <label style="margin-top:10px;display:block">🚦 Awaiting Operator (one per line via +)</label>
     <div style="display:flex;gap:8px;margin-top:4px"><input id="gateInput" placeholder="e.g. FocusTimer: approve design"/><button class="btn" onclick="addGate()">+</button></div>
@@ -180,8 +180,8 @@ function renderStandup(){
 }
 
 function reportText(s){
-  let o=`## Standup — ${s.date}\n`;
-  ROLES.forEach(({r})=>{const e=s.entries[r];if(e&&(e.y||e.t||e.b)){o+=`\n### ${r}\n- Yesterday: ${e.y||'—'}\n- Today: ${e.t||'—'}\n- Blockers: ${e.b||'—'}\n`;}});
+  let o=`## Standup - ${s.date}\n`;
+  ROLES.forEach(({r})=>{const e=s.entries[r];if(e&&(e.y||e.t||e.b)){o+=`\n### ${r}\n- Yesterday: ${e.y||'(none)'}\n- Today: ${e.t||'(none)'}\n- Blockers: ${e.b||'(none)'}\n`;}});
   if(s.gates&&s.gates.length){o+=`\n### 🚦 Awaiting Operator\n`+s.gates.map(g=>`- ${g}`).join('\n')+'\n';}
   return o;
 }
@@ -195,7 +195,7 @@ function saveStandup(){
   state.standups.unshift(rec);
   save();render();
 }
-function copyReport(){const s=state.standups[0]||{date:today(),entries:{},gates:state.gates};navigator.clipboard&&navigator.clipboard.writeText(reportText(s));alert('Standup copied — paste into 08_STANDUPS.md');}
+function copyReport(){const s=state.standups[0]||{date:today(),entries:{},gates:state.gates};navigator.clipboard&&navigator.clipboard.writeText(reportText(s));alert('Standup copied - paste into 08_STANDUPS.md');}
 function addGate(){const v=val('gateInput');if(v){state.gates.push(v);save();render();}}
 function rmGate(i){state.gates.splice(i,1);save();render();}
 function setFocus(r,v){state.team[r]=v;save();}
@@ -207,7 +207,7 @@ function openApp(id){
     <h2>${isNew?'New app':'Edit app'}</h2>
     <div class="field"><label>Name</label><input id="f_name" value="${esc(a.name)}"/></div>
     <div class="field"><label>Status</label><select id="f_status">${STATUSES.map(s=>`<option ${s===a.status?'selected':''}>${s}</option>`).join('')}</select></div>
-    <div class="field"><label>Current owner</label><select id="f_owner"><option value="">—</option>${ROLES.map(({r})=>`<option ${r===a.owner?'selected':''}>${r}</option>`).join('')}</select></div>
+    <div class="field"><label>Current owner</label><select id="f_owner"><option value="">-</option>${ROLES.map(({r})=>`<option ${r===a.owner?'selected':''}>${r}</option>`).join('')}</select></div>
     <div class="field"><label>Model</label><select id="f_model">${['opus','sonnet','haiku'].map(x=>`<option ${x===a.model?'selected':''}>${x}</option>`).join('')}</select></div>
     <div class="field"><label>Monetization</label><select id="f_monet">${['Paymium','Free + ads','One-time paid'].map(x=>`<option ${x===a.monet?'selected':''}>${x}</option>`).join('')}</select></div>
     <div class="field"><label>Est. revenue / mo ($)</label><input id="f_rev" inputmode="numeric" value="${esc(a.revenue)}"/></div>
