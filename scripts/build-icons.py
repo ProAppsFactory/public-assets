@@ -5,7 +5,7 @@ Authoritative by construction: the bytes come from the same artwork Apple
 serves on the listing. An app that is not live yields no file and is reported,
 which is the intended outcome for MathPuzzlr until it ships.
 """
-import json, pathlib, sys, urllib.request
+import json, pathlib, struct, sys, urllib.request
 
 SLUGS = {
     "huecheck": "6777696570",
@@ -26,9 +26,29 @@ def lookup(app_id):
     return json.loads(raw, strict=False)
 
 
+def png_problem(payload):
+    """Describe why `payload` is not a 256x256 PNG, or None if it is one.
+
+    Checks content, never file size: these icons legitimately range from about
+    8KB to 100KB because a flat-design icon compresses to a fraction of a
+    photographic one, so a size floor rejects valid artwork. The signature
+    catches an HTML error page or a JPEG, and IHDR catches a truncated or
+    wrong-size image.
+    """
+    if payload[:8] != b"\x89PNG\r\n\x1a\n":
+        return f"not a PNG, starts with {payload[:4].hex()}"
+    if payload[12:16] != b"IHDR":
+        return "no IHDR header"
+    width, height = struct.unpack(">II", payload[16:24])
+    if (width, height) != (256, 256):
+        return f"is {width}x{height}, expected 256x256"
+    return None
+
+
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     missing = []
+    corrupt = []
     for slug, app_id in sorted(SLUGS.items()):
         data = lookup(app_id)
         if not data["resultCount"]:
@@ -40,11 +60,31 @@ def main():
         # for a 256px PNG instead: lossless, and a quarter the bytes of the 512
         # PNG. 256px covers the 52pt settings row at 3x with headroom.
         art = data["results"][0]["artworkUrl512"].rsplit("/", 1)[0] + "/256x256bb.png"
+        payload = urllib.request.urlopen(art).read()
+
+        # Validate before writing, never after. This transform assumes Apple's
+        # "WxHbb.ext" URL convention; if that ever changes, the request still
+        # returns 200 with something that is not the image we asked for, and
+        # without this guard the script would commit it silently.
+        problem = png_problem(payload)
+        if problem:
+            corrupt.append(f"{slug} ({problem})")
+            print(f"FAIL  {slug:11} {problem}  <- {art}")
+            continue
+
         dest = OUT / f"{slug}.png"
-        dest.write_bytes(urllib.request.urlopen(art).read())
+        dest.write_bytes(payload)
         print(f"OK    {slug:11} {dest.stat().st_size:>7} bytes  <- {art}")
     if missing:
         print(f"\nNot live, no icon written: {', '.join(missing)}")
+
+    # An unreleased app is expected and exits 0. A download that came back as
+    # something other than a 256x256 PNG is a real failure and must not be
+    # mistaken for one, so it exits non-zero even when run unattended.
+    if corrupt:
+        print(f"\nBad artwork, not written: {', '.join(corrupt)}")
+        print("The Apple CDN URL convention may have changed. Do not commit.")
+        return 1
     return 0
 
 
