@@ -1,38 +1,44 @@
 [
   {
-    "_comment": "Add your live apps here. Each new app you ship appears automatically on the App Store developer page (the zero-maintenance default). Use this file only when you want curated featured placement without resubmitting apps.",
-    "id": "countup",
-    "name": "CountUp",
-    "tagline": "A tally counter with Apple Watch and widgets built in.",
-    "iconURL": "https://raw.githubusercontent.com/ProAppsFactory/public-assets/main/icons/countup.png",
-    "appStoreURL": "https://apps.apple.com/us/app/countup-tally-counter/id6777696578"
-  },
-  {
     "id": "huecheck",
     "name": "Hue Check",
     "tagline": "Point your camera at anything and get its exact color.",
     "iconURL": "https://raw.githubusercontent.com/ProAppsFactory/public-assets/main/icons/huecheck.png",
-    "appStoreURL": "https://apps.apple.com/us/app/hue-check-color-picker/id6777696570"
+    "appStoreURL": "https://apps.apple.com/us/app/id6777696570"
   },
   {
-    "id": "noisenest",
-    "name": "NoiseNest",
-    "tagline": "Brown, pink and white noise for sleep and focus.",
-    "iconURL": "https://raw.githubusercontent.com/ProAppsFactory/public-assets/main/icons/noisenest.png",
-    "appStoreURL": "https://apps.apple.com/us/app/noisenest-brown-noise-sleep/id6786730181"
+    "id": "countup",
+    "name": "CountUp",
+    "tagline": "A tally counter with Apple Watch and widgets built in.",
+    "iconURL": "https://raw.githubusercontent.com/ProAppsFactory/public-assets/main/icons/countup.png",
+    "appStoreURL": "https://apps.apple.com/us/app/id6777696578"
+  },
+  {
+    "id": "memivo",
+    "name": "Memivo",
+    "tagline": "Review and clear your camera roll, privately.",
+    "iconURL": "https://raw.githubusercontent.com/ProAppsFactory/public-assets/main/icons/memivo.png",
+    "appStoreURL": "https://apps.apple.com/us/app/id6797146656"
   },
   {
     "id": "milestones",
     "name": "Milestones",
     "tagline": "Track the ages and life events of the people you love.",
     "iconURL": "https://raw.githubusercontent.com/ProAppsFactory/public-assets/main/icons/milestones.png",
-    "appStoreURL": "https://apps.apple.com/app/id6778199024"
+    "appStoreURL": "https://apps.apple.com/us/app/id6778199024"
+  },
+  {
+    "id": "noisenest",
+    "name": "NoiseNest",
+    "tagline": "Brown, pink and white noise for sleep and focus.",
+    "iconURL": "https://raw.githubusercontent.com/ProAppsFactory/public-assets/main/icons/noisenest.png",
+    "appStoreURL": "https://apps.apple.com/us/app/id6786730181"
   },
   {
     "id": "subsnap",
     "name": "SubSnap",
     "tagline": "Track subscriptions before they renew, no bank link needed.",
     "iconURL": "https://raw.githubusercontent.com/ProAppsFactory/public-assets/main/icons/subsnap.png",
-    "appStoreURL": "https://apps.apple.com/us/app/subsnap-subscription-tracker/id6786732038"
+    "appStoreURL": "https://apps.apple.com/us/app/id6786732038"
   }
 ]
