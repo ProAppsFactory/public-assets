@@ -35,7 +35,11 @@ def main():
             missing.append(f"{slug} ({app_id})")
             print(f"SKIP  {slug:11} not live, resultCount 0")
             continue
-        art = data["results"][0]["artworkUrl512"]
+        # artworkUrl512 points at ".../512x512bb.jpg". Apple's image CDN honours
+        # both the size and the extension in that last path component, so ask it
+        # for a 256px PNG instead: lossless, and a quarter the bytes of the 512
+        # PNG. 256px covers the 52pt settings row at 3x with headroom.
+        art = data["results"][0]["artworkUrl512"].rsplit("/", 1)[0] + "/256x256bb.png"
         dest = OUT / f"{slug}.png"
         dest.write_bytes(urllib.request.urlopen(art).read())
         print(f"OK    {slug:11} {dest.stat().st_size:>7} bytes  <- {art}")
