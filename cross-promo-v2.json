@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "apps": {
+    "huecheck": {
+      "appStoreId": "6777696570",
+      "name": "Hue Check",
+      "tagline": "Camera hex and paint finder",
+      "icon": "icons/huecheck.png",
+      "scheme": "huecheck"
+    },
+    "countup": {
+      "appStoreId": "6777696578",
+      "name": "CountUp",
+      "tagline": "Tally counter with Watch",
+      "icon": "icons/countup.png",
+      "scheme": "countup"
+    },
+    "memivo": {
+      "appStoreId": "6797146656",
+      "name": "Memivo",
+      "tagline": "Review photos privately",
+      "icon": "icons/memivo.png",
+      "scheme": "memivo"
+    },
+    "milestones": {
+      "appStoreId": "6778199024",
+      "name": "Milestones",
+      "tagline": "Ages and life events",
+      "icon": "icons/milestones.png",
+      "scheme": "milestones"
+    },
+    "noisenest": {
+      "appStoreId": "6786730181",
+      "name": "NoiseNest",
+      "tagline": "Brown noise for sleep",
+      "icon": "icons/noisenest.png",
+      "scheme": "noisenest"
+    },
+    "subsnap": {
+      "appStoreId": "6786732038",
+      "name": "SubSnap",
+      "tagline": "Track subscriptions before they renew",
+      "icon": "icons/subsnap.png",
+      "scheme": "subsnap"
+    }
+  },
+  "placements": {
+    "memivo": ["huecheck", "countup"],
+    "huecheck": ["memivo", "countup"],
+    "countup": ["memivo", "huecheck"]
+  }
+}
