@@ -1,18 +1,31 @@
 #!/usr/bin/env python3
 """Validate both cross-promo feeds against Apple's live lookup API.
 
-Fails on any appStoreId that returns resultCount 0, any icon that is missing
-or not a real image, any placement referencing an unknown app, any app
-promoting itself, and any em dash anywhere in either file.
+Exit codes are deliberately three-way, because "this feed is wrong" and "we
+could not ask Apple today" are different events and must not share a signal:
+
+  0   everything verified
+  1   a real defect in a feed. Fix the feed.
+  75  could not reach Apple after retries. Nothing was disproved. EX_TEMPFAIL.
+
+This runs on every push and on a daily schedule, and it is the check that
+exists because three fabricated App Store IDs shipped to production unnoticed.
+A check that goes red on a transient network blip is a check people learn to
+re-run without reading, which would rebuild the exact complacency it is meant
+to prevent. So transient failures are retried, then reported as 75, and the
+workflow surfaces that as a warning rather than a broken build.
 """
-import json, pathlib, re, struct, sys, urllib.error, urllib.request
+import json, pathlib, re, struct, sys, time, urllib.error, urllib.request
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 V2 = ROOT / "cross-promo-v2.json"
 LEGACY = ROOT / "cross-promo.json"
 ID_IN_URL = re.compile(r"/id(\d+)")
+EXIT_TEMPFAIL = 75
+LOOKUP_ATTEMPTS = 3
 
-failures = []
+failures = []     # real defects in the feeds
+unreachable = []  # could not ask Apple. Proves nothing either way.
 
 
 def fail(msg):
@@ -20,14 +33,41 @@ def fail(msg):
     print(f"FAIL  {msg}")
 
 
+def unavailable(msg):
+    unreachable.append(msg)
+    print(f"SKIP  {msg}")
+
+
 def resolves(app_id):
+    """Look up an app, retrying transient failures.
+
+    Returns the decoded response, or None if Apple could not be reached or
+    answered with something that is not the JSON we expect. None means
+    "unknown", never "dead": the caller must not treat it as a defect.
+    """
     url = f"https://itunes.apple.com/lookup?id={app_id}&country=us"
-    try:
-        raw = urllib.request.urlopen(url, timeout=20).read().decode("utf-8")
-    except urllib.error.URLError as e:
-        fail(f"lookup for {app_id} could not reach Apple: {e}")
-        return None
-    return json.loads(raw, strict=False)
+    for attempt in range(1, LOOKUP_ATTEMPTS + 1):
+        try:
+            raw = urllib.request.urlopen(url, timeout=20).read().decode("utf-8")
+        except urllib.error.URLError as e:
+            reason = f"{e}"
+        else:
+            try:
+                data = json.loads(raw, strict=False)
+            except json.JSONDecodeError as e:
+                # A 200 carrying something that is not JSON, for example a
+                # proxy or captive-portal interstitial.
+                reason = f"response was not JSON ({e})"
+            else:
+                if "resultCount" not in data:
+                    reason = "response had no resultCount field"
+                else:
+                    return data
+        if attempt < LOOKUP_ATTEMPTS:
+            time.sleep(2 ** attempt)
+    unavailable(f"lookup for {app_id} could not reach Apple after "
+                f"{LOOKUP_ATTEMPTS} attempts: {reason}")
+    return None
 
 
 def check_id(app_id, where):
@@ -37,7 +77,8 @@ def check_id(app_id, where):
     if not data["resultCount"]:
         fail(f"{where}: appStoreId {app_id} returns resultCount 0")
     else:
-        print(f"OK    {where:28} {app_id} -> {data['results'][0]['trackName']}")
+        name = data["results"][0].get("trackName", "(no trackName)")
+        print(f"OK    {where:28} {app_id} -> {name}")
 
 
 def check_icon(path, where):
@@ -87,13 +128,16 @@ def em_dash_locations(node, trail=""):
 
 
 def main():
-    for path in (V2, LEGACY):
+    # Parse each feed once and reuse it.
+    feeds = {path: json.loads(path.read_text()) for path in (V2, LEGACY)}
+
+    for path, data in feeds.items():
         # Catch the raw character, and separately the escaped form, by checking
         # the decoded values. Either one reaches a user as an em dash.
-        for where in em_dash_locations(json.loads(path.read_text())):
+        for where in em_dash_locations(data):
             fail(f"{path.name} contains an em dash at {where}")
 
-    v2 = json.loads(V2.read_text())
+    v2 = feeds[V2]
     for slug, app in sorted(v2["apps"].items()):
         check_id(app["appStoreId"], f"v2/{slug}")
         check_icon(ROOT / app["icon"], f"v2/{slug}")
@@ -107,7 +151,7 @@ def main():
             if t not in v2["apps"]:
                 fail(f"v2/placements: {src} targets unknown app {t}")
 
-    legacy = json.loads(LEGACY.read_text())
+    legacy = feeds[LEGACY]
     if not isinstance(legacy, list):
         fail("legacy feed is no longer a flat array; shipped decoders will break")
     else:
@@ -118,9 +162,19 @@ def main():
             else:
                 check_id(m.group(1), f"legacy/{entry['id']}")
 
+    # A real defect always wins: if anything is genuinely wrong, say so, even
+    # if some other lookup also happened to be unreachable.
     if failures:
         print(f"\n{len(failures)} failure(s).")
         return 1
+
+    # Nothing was disproved, but nothing was fully proved either. Distinct exit
+    # code so CI can warn instead of going red on someone else's outage.
+    if unreachable:
+        print(f"\nCould not verify {len(unreachable)} entr(y/ies): Apple was "
+              f"unreachable. No defect was found. Exiting {EXIT_TEMPFAIL}.")
+        return EXIT_TEMPFAIL
+
     print("\nAll feed entries resolve.")
     return 0
 
