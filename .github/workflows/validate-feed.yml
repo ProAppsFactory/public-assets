@@ -1,0 +1,43 @@
+name: Validate cross-promo feed
+
+on:
+  push:
+    paths:
+      - "cross-promo.json"
+      - "cross-promo-v2.json"
+      - "icons/**"
+      - "scripts/validate-feed.py"
+      - ".github/workflows/validate-feed.yml"
+  pull_request:
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate feeds against Apple lookup API
+        run: |
+          set +e
+          python3 scripts/validate-feed.py
+          status=$?
+          set -e
+          if [ "$status" -eq 0 ]; then
+            echo "Feeds verified."
+            exit 0
+          fi
+          if [ "$status" -eq 75 ]; then
+            # EX_TEMPFAIL: Apple was unreachable after retries. Nothing was
+            # disproved. Going red here would teach everyone to re-run this
+            # check without reading it, which is how the fabricated IDs this
+            # job exists to catch went unnoticed in the first place.
+            echo "::warning title=Feed not verified::Apple's lookup API was unreachable after retries. No defect found, nothing verified. Re-run later."
+            exit 0
+          fi
+          echo "::error title=Feed defect::A cross-promo feed entry is genuinely broken. Read the FAIL lines above."
+          exit "$status"
