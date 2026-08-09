@@ -64,10 +64,34 @@ def check_icon(path, where):
         fail(f"{where}: icon {path.name} is {width}x{height}, expected 256x256")
 
 
+def em_dash_locations(node, trail=""):
+    """Yield paths to decoded string values containing an em dash.
+
+    This walks the DECODED structure rather than grepping the raw file, because
+    `json.dumps` escapes non-ASCII by default: an em dash can sit in the file as
+    the six characters \\u2014 and sail past a text search while still decoding
+    to a real em dash in every app that reads the feed. Any tool that rewrites
+    these files with the standard library produces exactly that form.
+    """
+    if isinstance(node, str):
+        if "—" in node:
+            yield trail or "(root)"
+    elif isinstance(node, dict):
+        for key, value in node.items():
+            if "—" in key:
+                yield f"{trail}.{key} (in the key itself)"
+            yield from em_dash_locations(value, f"{trail}.{key}")
+    elif isinstance(node, list):
+        for index, value in enumerate(node):
+            yield from em_dash_locations(value, f"{trail}[{index}]")
+
+
 def main():
     for path in (V2, LEGACY):
-        if "—" in path.read_text():
-            fail(f"{path.name} contains an em dash")
+        # Catch the raw character, and separately the escaped form, by checking
+        # the decoded values. Either one reaches a user as an em dash.
+        for where in em_dash_locations(json.loads(path.read_text())):
+            fail(f"{path.name} contains an em dash at {where}")
 
     v2 = json.loads(V2.read_text())
     for slug, app in sorted(v2["apps"].items()):
