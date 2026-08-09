@@ -28,13 +28,6 @@
     "appStoreURL": "https://apps.apple.com/us/app/id6778199024"
   },
   {
-    "id": "noisenest",
-    "name": "NoiseNest",
-    "tagline": "Brown, pink and white noise for sleep and focus.",
-    "iconURL": "https://raw.githubusercontent.com/ProAppsFactory/public-assets/main/icons/noisenest.png",
-    "appStoreURL": "https://apps.apple.com/us/app/id6786730181"
-  },
-  {
     "id": "subsnap",
     "name": "SubSnap",
     "tagline": "Track subscriptions before they renew, no bank link needed.",
