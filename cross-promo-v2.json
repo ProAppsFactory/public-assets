@@ -42,11 +42,19 @@
       "tagline": "Track subscriptions before they renew",
       "icon": "icons/subsnap.png",
       "scheme": "subsnap"
+    },
+    "angrymath": {
+      "appStoreId": "6765843459",
+      "name": "Angry Math",
+      "tagline": "True or false in one second",
+      "icon": "icons/angrymath.png",
+      "scheme": "angrymath"
     }
   },
   "placements": {
     "memivo": ["huecheck", "countup"],
     "huecheck": ["memivo", "countup"],
-    "countup": ["memivo", "huecheck"]
+    "countup": ["memivo", "huecheck"],
+    "angrymath": ["countup", "memivo"]
   }
 }

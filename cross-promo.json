@@ -33,5 +33,12 @@
     "tagline": "Track subscriptions before they renew, no bank link needed.",
     "iconURL": "https://raw.githubusercontent.com/ProAppsFactory/public-assets/main/icons/subsnap.png",
     "appStoreURL": "https://apps.apple.com/us/app/id6786732038"
+  },
+  {
+    "id": "angrymath",
+    "name": "Angry Math",
+    "tagline": "True or false? You get one second. Make it angry.",
+    "iconURL": "https://raw.githubusercontent.com/ProAppsFactory/public-assets/main/icons/angrymath.png",
+    "appStoreURL": "https://apps.apple.com/us/app/id6765843459"
   }
 ]
