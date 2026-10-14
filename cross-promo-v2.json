@@ -45,8 +45,8 @@
     },
     "angrymath": {
       "appStoreId": "6765843459",
-      "name": "Angry Math",
-      "tagline": "True or false in one second",
+      "name": "Angry Math: True or False",
+      "tagline": "True or false mental math",
       "icon": "icons/angrymath.png",
       "scheme": "angrymath"
     }

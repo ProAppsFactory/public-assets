@@ -36,8 +36,8 @@
   },
   {
     "id": "angrymath",
-    "name": "Angry Math",
-    "tagline": "True or false? You get one second. Make it angry.",
+    "name": "Angry Math: True or False",
+    "tagline": "True or false mental math",
     "iconURL": "https://raw.githubusercontent.com/ProAppsFactory/public-assets/main/icons/angrymath.png",
     "appStoreURL": "https://apps.apple.com/us/app/id6765843459"
   }
