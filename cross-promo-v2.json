@@ -49,12 +49,19 @@
       "tagline": "True or false mental math",
       "icon": "icons/angrymath-2.0.0.png",
       "scheme": "angrymath"
+    },
+    "dawnsum": {
+      "appStoreId": "6818749420",
+      "name": "MathBell",
+      "tagline": "Solve math puzzles to wake up",
+      "icon": "icons/mathbell.png",
+      "scheme": "mathbell"
     }
   },
   "placements": {
-    "memivo": ["huecheck", "countup"],
-    "huecheck": ["memivo", "countup"],
-    "countup": ["memivo", "huecheck"],
-    "angrymath": ["countup", "memivo"]
+    "memivo": ["huecheck", "countup", "dawnsum"],
+    "huecheck": ["memivo", "countup", "dawnsum"],
+    "countup": ["memivo", "huecheck", "dawnsum"],
+    "angrymath": ["countup", "memivo", "dawnsum"]
   }
 }
