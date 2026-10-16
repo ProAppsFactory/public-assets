@@ -47,5 +47,12 @@
     "tagline": "Solve math puzzles to stop your alarm and wake up.",
     "iconURL": "https://raw.githubusercontent.com/ProAppsFactory/public-assets/main/icons/mathbell.png",
     "appStoreURL": "https://apps.apple.com/us/app/id6818749420"
+  },
+  {
+    "id": "unmark",
+    "name": "Unmark: Paste AI as Formatted",
+    "tagline": "Turn AI Markdown into clean rich text for email and docs.",
+    "iconURL": "https://raw.githubusercontent.com/ProAppsFactory/public-assets/main/icons/unmark.png",
+    "appStoreURL": "https://apps.apple.com/us/app/id6810102411"
   }
 ]

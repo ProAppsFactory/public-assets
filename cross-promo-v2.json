@@ -56,12 +56,19 @@
       "tagline": "Solve math puzzles to wake up",
       "icon": "icons/mathbell.png",
       "scheme": "mathbell"
+    },
+    "unmark": {
+      "appStoreId": "6810102411",
+      "name": "Unmark",
+      "tagline": "Paste AI answers as clean rich text",
+      "icon": "icons/unmark.png",
+      "scheme": "unmark"
     }
   },
   "placements": {
-    "memivo": ["huecheck", "countup", "dawnsum"],
-    "huecheck": ["memivo", "countup", "dawnsum"],
-    "countup": ["memivo", "huecheck", "dawnsum"],
-    "angrymath": ["countup", "memivo", "dawnsum"]
+    "memivo": ["huecheck", "countup", "dawnsum", "unmark"],
+    "huecheck": ["memivo", "countup", "dawnsum", "unmark"],
+    "countup": ["memivo", "huecheck", "dawnsum", "unmark"],
+    "angrymath": ["countup", "memivo", "dawnsum", "unmark"]
   }
 }

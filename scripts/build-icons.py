@@ -16,6 +16,7 @@ SLUGS = {
     "subsnap": "6786732038",
     "angrymath": "6765843459",
     "mathbell": "6818749420",
+    "unmark": "6810102411",
 }
 
 OUT = pathlib.Path(__file__).resolve().parent.parent / "icons"
