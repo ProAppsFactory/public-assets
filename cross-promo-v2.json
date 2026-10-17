@@ -25,8 +25,8 @@
     "milestones": {
       "appStoreId": "6778199024",
       "name": "Milestones",
-      "tagline": "Ages and life events",
-      "icon": "icons/milestones.png",
+      "tagline": "Anniversary & Birthday Tracker",
+      "icon": "icons/milestones-3.0.0.png",
       "scheme": "milestones"
     },
     "noisenest": {
