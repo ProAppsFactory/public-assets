@@ -4,71 +4,91 @@
     "huecheck": {
       "appStoreId": "6777696570",
       "name": "Hue Check",
-      "tagline": "Camera hex and paint finder",
+      "tagline": "Exact color from your camera",
       "icon": "icons/huecheck.png",
       "scheme": "huecheck"
     },
     "countup": {
       "appStoreId": "6777696578",
       "name": "CountUp",
-      "tagline": "Tally counter with Watch",
+      "tagline": "Tap to count, on Watch too",
       "icon": "icons/countup.png",
       "scheme": "countup"
     },
     "memivo": {
       "appStoreId": "6797146656",
       "name": "Verso",
-      "tagline": "Review photos privately",
+      "tagline": "Swipe your photos clean",
       "icon": "icons/verso.png",
       "scheme": "memivo"
     },
     "milestones": {
       "appStoreId": "6778199024",
       "name": "Milestones",
-      "tagline": "Anniversary & Birthday Tracker",
+      "tagline": "Never miss a birthday again",
       "icon": "icons/milestones-3.0.0.png",
       "scheme": "milestones"
     },
     "noisenest": {
       "appStoreId": "6786730181",
       "name": "NoiseNest",
-      "tagline": "Brown noise for sleep",
+      "tagline": "Soothing brown noise to sleep",
       "icon": "icons/noisenest.png",
       "scheme": "noisenest"
     },
     "subsnap": {
       "appStoreId": "6786732038",
       "name": "SubSnap",
-      "tagline": "Track subscriptions before they renew",
+      "tagline": "Catch renewals before they bill",
       "icon": "icons/subsnap.png",
       "scheme": "subsnap"
     },
     "angrymath": {
       "appStoreId": "6765843459",
       "name": "Angry Math: True or False",
-      "tagline": "True or false mental math",
+      "tagline": "Beat the clock: true or false?",
       "icon": "icons/angrymath-2.0.0.png",
       "scheme": "angrymath"
     },
     "dawnsum": {
       "appStoreId": "6818749420",
       "name": "MathBell",
-      "tagline": "Solve math puzzles to wake up",
+      "tagline": "Solve math to stop your alarm",
       "icon": "icons/mathbell.png",
       "scheme": "mathbell"
     },
     "unmark": {
       "appStoreId": "6810102411",
       "name": "Unmark",
-      "tagline": "Paste AI answers as clean rich text",
+      "tagline": "Paste AI as clean rich text",
       "icon": "icons/unmark.png",
       "scheme": "unmark"
     }
   },
   "placements": {
-    "memivo": ["huecheck", "countup", "dawnsum", "unmark"],
-    "huecheck": ["memivo", "countup", "dawnsum", "unmark"],
-    "countup": ["memivo", "huecheck", "dawnsum", "unmark"],
-    "angrymath": ["countup", "memivo", "dawnsum", "unmark"]
+    "memivo": [
+      "huecheck",
+      "countup",
+      "dawnsum",
+      "unmark"
+    ],
+    "huecheck": [
+      "memivo",
+      "countup",
+      "dawnsum",
+      "unmark"
+    ],
+    "countup": [
+      "memivo",
+      "huecheck",
+      "dawnsum",
+      "unmark"
+    ],
+    "angrymath": [
+      "countup",
+      "memivo",
+      "dawnsum",
+      "unmark"
+    ]
   }
 }

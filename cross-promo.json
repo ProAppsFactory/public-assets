@@ -9,56 +9,56 @@
   {
     "id": "countup",
     "name": "CountUp",
-    "tagline": "A tally counter with Apple Watch and widgets built in.",
+    "tagline": "Count anything with a tap, from your Watch, widgets or Lock Screen.",
     "iconURL": "https://raw.githubusercontent.com/ProAppsFactory/public-assets/main/icons/countup.png",
     "appStoreURL": "https://apps.apple.com/us/app/id6777696578"
   },
   {
     "id": "memivo",
     "name": "Verso",
-    "tagline": "Review and clear your camera roll, privately.",
+    "tagline": "Swipe through your camera roll, keep the best, free up space.",
     "iconURL": "https://raw.githubusercontent.com/ProAppsFactory/public-assets/main/icons/verso.png",
     "appStoreURL": "https://apps.apple.com/us/app/id6797146656"
   },
   {
     "id": "milestones",
     "name": "Milestones",
-    "tagline": "Anniversary & Birthday Tracker",
+    "tagline": "Never miss a birthday or anniversary again.",
     "iconURL": "https://raw.githubusercontent.com/ProAppsFactory/public-assets/main/icons/milestones-3.0.0.png",
     "appStoreURL": "https://apps.apple.com/us/app/id6778199024"
   },
   {
     "id": "subsnap",
     "name": "SubSnap",
-    "tagline": "Track subscriptions before they renew, no bank link needed.",
+    "tagline": "Catch subscriptions before they renew. No bank link needed.",
     "iconURL": "https://raw.githubusercontent.com/ProAppsFactory/public-assets/main/icons/subsnap.png",
     "appStoreURL": "https://apps.apple.com/us/app/id6786732038"
   },
   {
     "id": "angrymath",
     "name": "Angry Math: True or False",
-    "tagline": "True or false mental math",
+    "tagline": "Beat the clock with fast true-or-false math.",
     "iconURL": "https://raw.githubusercontent.com/ProAppsFactory/public-assets/main/icons/angrymath-2.0.0.png",
     "appStoreURL": "https://apps.apple.com/us/app/id6765843459"
   },
   {
     "id": "dawnsum",
     "name": "MathBell",
-    "tagline": "Solve math puzzles to stop your alarm and wake up.",
+    "tagline": "Solve a math puzzle to silence your alarm and wake up for real.",
     "iconURL": "https://raw.githubusercontent.com/ProAppsFactory/public-assets/main/icons/mathbell.png",
     "appStoreURL": "https://apps.apple.com/us/app/id6818749420"
   },
   {
     "id": "unmark",
     "name": "Unmark: Paste AI as Formatted",
-    "tagline": "Turn AI Markdown into clean rich text for email and docs.",
+    "tagline": "Paste AI answers as clean text, with no stray symbols.",
     "iconURL": "https://raw.githubusercontent.com/ProAppsFactory/public-assets/main/icons/unmark.png",
     "appStoreURL": "https://apps.apple.com/us/app/id6810102411"
   },
   {
     "id": "noisenest",
     "name": "NoiseNest",
-    "tagline": "Brown noise for sleep",
+    "tagline": "Soothing brown noise to help you sleep, focus and unwind.",
     "iconURL": "https://raw.githubusercontent.com/ProAppsFactory/public-assets/main/icons/noisenest.png",
     "appStoreURL": "https://apps.apple.com/us/app/id6786730181"
   }
