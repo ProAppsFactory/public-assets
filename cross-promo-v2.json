@@ -17,9 +17,9 @@
     },
     "memivo": {
       "appStoreId": "6797146656",
-      "name": "Memivo",
+      "name": "Verso",
       "tagline": "Review photos privately",
-      "icon": "icons/memivo.png",
+      "icon": "icons/verso.png",
       "scheme": "memivo"
     },
     "milestones": {
