@@ -54,5 +54,12 @@
     "tagline": "Turn AI Markdown into clean rich text for email and docs.",
     "iconURL": "https://raw.githubusercontent.com/ProAppsFactory/public-assets/main/icons/unmark.png",
     "appStoreURL": "https://apps.apple.com/us/app/id6810102411"
+  },
+  {
+    "id": "noisenest",
+    "name": "NoiseNest",
+    "tagline": "Brown noise for sleep",
+    "iconURL": "https://raw.githubusercontent.com/ProAppsFactory/public-assets/main/icons/noisenest.png",
+    "appStoreURL": "https://apps.apple.com/us/app/id6786730181"
   }
 ]
