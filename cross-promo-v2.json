@@ -12,7 +12,7 @@
       "appStoreId": "6777696578",
       "name": "CountUp",
       "tagline": "Tap to count, on Watch too",
-      "icon": "icons/countup.png",
+      "icon": "icons/countup-dial.png",
       "scheme": "countup"
     },
     "memivo": {
