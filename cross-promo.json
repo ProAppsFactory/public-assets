@@ -61,5 +61,12 @@
     "tagline": "Soothing brown noise to help you sleep, focus and unwind.",
     "iconURL": "https://raw.githubusercontent.com/ProAppsFactory/public-assets/main/icons/noisenest.png",
     "appStoreURL": "https://apps.apple.com/us/app/id6786730181"
+  },
+  {
+    "id": "pairly",
+    "name": "Pairly",
+    "tagline": "Turn your own photos into a memory match game.",
+    "iconURL": "https://raw.githubusercontent.com/ProAppsFactory/public-assets/main/icons/pairly.png",
+    "appStoreURL": "https://apps.apple.com/us/app/id6823949046"
   }
 ]

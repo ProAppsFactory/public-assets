@@ -63,6 +63,13 @@
       "tagline": "Paste AI as clean rich text",
       "icon": "icons/unmark.png",
       "scheme": "unmark"
+    },
+    "pairly": {
+      "appStoreId": "6823949046",
+      "name": "Pairly",
+      "tagline": "Turn your photos into a memory game",
+      "icon": "icons/pairly.png",
+      "scheme": "pairly"
     }
   },
   "placements": {
@@ -70,25 +77,29 @@
       "huecheck",
       "countup",
       "dawnsum",
-      "unmark"
+      "unmark",
+      "pairly"
     ],
     "huecheck": [
       "memivo",
       "countup",
       "dawnsum",
-      "unmark"
+      "unmark",
+      "pairly"
     ],
     "countup": [
       "memivo",
       "huecheck",
       "dawnsum",
-      "unmark"
+      "unmark",
+      "pairly"
     ],
     "angrymath": [
       "countup",
       "memivo",
       "dawnsum",
-      "unmark"
+      "unmark",
+      "pairly"
     ]
   }
 }
