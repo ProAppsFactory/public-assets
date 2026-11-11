@@ -70,6 +70,13 @@
       "tagline": "Turn your photos into a memory game",
       "icon": "icons/pairly.png",
       "scheme": "pairly"
+    },
+    "duowall": {
+      "appStoreId": "6826853137",
+      "name": "Duo Wall",
+      "tagline": "Wallpapers for both Duo screens",
+      "icon": "icons/duowall.png",
+      "scheme": "duowall"
     }
   },
   "placements": {
@@ -78,28 +85,32 @@
       "countup",
       "dawnsum",
       "unmark",
-      "pairly"
+      "pairly",
+      "duowall"
     ],
     "huecheck": [
       "memivo",
       "countup",
       "dawnsum",
       "unmark",
-      "pairly"
+      "pairly",
+      "duowall"
     ],
     "countup": [
       "memivo",
       "huecheck",
       "dawnsum",
       "unmark",
-      "pairly"
+      "pairly",
+      "duowall"
     ],
     "angrymath": [
       "countup",
       "memivo",
       "dawnsum",
       "unmark",
-      "pairly"
+      "pairly",
+      "duowall"
     ]
   }
 }

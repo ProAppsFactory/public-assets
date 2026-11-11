@@ -18,6 +18,7 @@ SLUGS = {
     "mathbell": "6818749420",
     "unmark": "6810102411",
     "pairly": "6823949046",
+    "duowall": "6826853137",
 }
 
 OUT = pathlib.Path(__file__).resolve().parent.parent / "icons"

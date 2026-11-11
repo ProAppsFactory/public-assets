@@ -68,5 +68,12 @@
     "tagline": "Turn your own photos into a memory match game.",
     "iconURL": "https://raw.githubusercontent.com/ProAppsFactory/public-assets/main/icons/pairly.png",
     "appStoreURL": "https://apps.apple.com/us/app/id6823949046"
+  },
+  {
+    "id": "duowall",
+    "name": "Duo Wall",
+    "tagline": "Wallpapers made for both screens of your foldable iPhone.",
+    "iconURL": "https://raw.githubusercontent.com/ProAppsFactory/public-assets/main/icons/duowall.png",
+    "appStoreURL": "https://apps.apple.com/us/app/id6826853137"
   }
 ]
